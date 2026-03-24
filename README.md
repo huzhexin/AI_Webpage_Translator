@@ -1,5 +1,7 @@
 # AI Webpage Translator
 
+[中文文档](README_CN.md) | English
+
 A Chrome extension that translates web pages using any OpenAI-compatible API.
 
 ![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-blue?logo=googlechrome)

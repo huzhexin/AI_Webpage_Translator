@@ -1,0 +1,164 @@
+/* AI Webpage Translator - Content Styles */
+
+/* ---- Bilingual Mode ---- */
+.ai-trans-wrapper {
+  display: inline;
+}
+
+.ai-trans-original {
+  display: inline;
+}
+
+.ai-trans-translation {
+  display: block;
+  color: #1a73e8;
+  font-size: 0.88em;
+  font-style: italic;
+  border-left: 2px solid #1a73e8;
+  padding-left: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  line-height: 1.5;
+  font-family: inherit;
+  font-weight: normal;
+  text-decoration: none;
+  letter-spacing: normal;
+}
+
+/* ---- Loading Shimmer ---- */
+.ai-trans-loading-node {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: ai-trans-shimmer 1.5s infinite linear;
+  border-radius: 3px;
+  color: transparent !important;
+  user-select: none;
+  pointer-events: none;
+  min-width: 40px;
+  display: inline-block;
+}
+
+@keyframes ai-trans-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ---- Floating Translation Panel ---- */
+.ai-trans-panel {
+  position: absolute;
+  z-index: 2147483647;
+  max-width: 360px;
+  min-width: 200px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18), 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 14px 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #222222;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  pointer-events: auto;
+  display: none;
+}
+
+.ai-trans-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ai-trans-panel-title {
+  font-size: 11px;
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ai-trans-panel-close {
+  cursor: pointer;
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ai-trans-panel-close:hover {
+  color: #333;
+  background: #f0f0f0;
+}
+
+.ai-trans-panel-body {
+  color: #1a73e8;
+  font-size: 14px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.ai-trans-panel-source {
+  color: #777;
+  font-size: 12px;
+  border-top: 1px solid #eee;
+  margin-top: 8px;
+  padding-top: 8px;
+  word-break: break-word;
+  font-style: italic;
+}
+
+.ai-trans-panel-loading {
+  color: #aaa;
+  font-style: italic;
+}
+
+.ai-trans-panel-error {
+  color: #d93025;
+  font-size: 13px;
+}
+
+/* ---- Progress Bar ---- */
+.ai-trans-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2147483646;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: opacity 0.4s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.ai-trans-progress-label {
+  font-size: 12px;
+  color: #555;
+  white-space: nowrap;
+  min-width: 160px;
+}
+
+.ai-trans-progress-track {
+  flex: 1;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ai-trans-progress-bar {
+  height: 4px;
+  background: linear-gradient(90deg, #1a73e8, #34a853);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s ease;
+  flex: 1;
+  max-width: calc(100% - 180px);
+}

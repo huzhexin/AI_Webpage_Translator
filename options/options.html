@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Translator - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="options-container">
+    <header class="options-header">
+      <h1>AI Translator Settings</h1>
+      <p class="options-subtitle">Configure your translation API and preferences</p>
+    </header>
+
+    <section class="settings-section">
+      <h2>API Configuration</h2>
+
+      <div class="field-group">
+        <label for="api-endpoint">API Endpoint</label>
+        <input type="url" id="api-endpoint" placeholder="https://your-api-endpoint/v1" autocomplete="off">
+        <p class="hint">
+          Supports any OpenAI-compatible API endpoint.<br>
+          You can also fill in the full path ending with <code>/chat/completions</code>.
+        </p>
+      </div>
+
+      <div class="field-group">
+        <label for="api-key">API Key</label>
+        <div class="input-with-toggle">
+          <input type="password" id="api-key" placeholder="sk-..." autocomplete="off">
+          <button type="button" id="toggle-api-key" class="btn-icon" title="Show/hide API key">
+            <svg id="eye-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="#666"/>
+            </svg>
+          </button>
+        </div>
+        <p class="hint">Leave blank for local Ollama (no authentication required).</p>
+      </div>
+
+      <div class="field-group">
+        <label for="model-name">Model Name</label>
+        <input type="text" id="model-name" placeholder="Enter model name" autocomplete="off">
+        <p class="hint">Enter the model name as required by your API provider.</p>
+      </div>
+
+      <div class="test-connection-row">
+        <button id="test-connection" class="btn btn-secondary">Test Connection</button>
+        <span id="test-result" class="test-result"></span>
+      </div>
+    </section>
+
+    <section class="settings-section">
+      <h2>Translation Preferences</h2>
+
+      <div class="field-group">
+        <label for="target-language">Default Target Language</label>
+        <select id="target-language">
+          <option value="Chinese (Simplified)">Chinese (Simplified)</option>
+          <option value="Chinese (Traditional)">Chinese (Traditional)</option>
+          <option value="English">English</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Korean">Korean</option>
+          <option value="French">French</option>
+          <option value="German">German</option>
+          <option value="Spanish">Spanish</option>
+          <option value="Portuguese">Portuguese</option>
+          <option value="Russian">Russian</option>
+          <option value="Arabic">Arabic</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Italian">Italian</option>
+          <option value="Dutch">Dutch</option>
+          <option value="Polish">Polish</option>
+          <option value="Turkish">Turkish</option>
+          <option value="Vietnamese">Vietnamese</option>
+          <option value="Thai">Thai</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="display-mode">Default Display Mode</label>
+        <select id="display-mode">
+          <option value="bilingual">Bilingual — show original + translation</option>
+          <option value="replace">Replace — show translation only</option>
+        </select>
+        <p class="hint">You can also change this per-page from the popup.</p>
+      </div>
+
+      <div class="field-group">
+        <label for="chunk-size">Chunk Size (characters per API call)</label>
+        <input type="number" id="chunk-size" min="500" max="8000" step="500" value="2000">
+        <p class="hint">
+          Lower values = more API calls but higher accuracy per call.<br>
+          Higher values = fewer API calls but may reduce translation quality.
+          Recommended: 1500–3000.
+        </p>
+      </div>
+    </section>
+
+    <div class="options-footer">
+      <button id="save-settings" class="btn btn-primary">Save Settings</button>
+      <span id="save-status" class="save-status"></span>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

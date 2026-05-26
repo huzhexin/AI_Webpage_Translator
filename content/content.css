@@ -67,6 +67,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+  cursor: grab;
 }
 
 .ai-trans-panel-title {
@@ -171,10 +172,6 @@
   cursor: grab;
   user-select: none;
   flex-shrink: 0;
-}
-
-.ai-trans-panel-header {
-  cursor: grab;
 }
 
 .ai-trans-panel-dragging .ai-trans-panel-header {

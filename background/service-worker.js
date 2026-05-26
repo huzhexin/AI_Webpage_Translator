@@ -17,6 +17,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 // ---- Settings Cache ----
 let cachedSettings = null;
+let settingsFetchPromise = null;
 
 // ---- Context Menu Handler ----
 chrome.contextMenus.onClicked.addListener((info, tab) => {
@@ -55,22 +56,28 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // ---- Invalidate settings cache on storage change ----
 chrome.storage.onChanged.addListener(() => {
   cachedSettings = null;
+  settingsFetchPromise = null;
 });
 
 // ---- Settings ----
 async function getSettingsAsync() {
   if (cachedSettings) return cachedSettings;
-  const defaults = {
-    apiEndpoint: '',
-    apiKey: '',
-    model: '',
-    targetLanguage: 'Chinese (Simplified)',
-    displayMode: 'bilingual',
-    chunkSize: 4000
-  };
-  const stored = await chrome.storage.sync.get(Object.keys(defaults));
-  cachedSettings = { ...defaults, ...stored };
-  return cachedSettings;
+  if (settingsFetchPromise) return settingsFetchPromise;
+  settingsFetchPromise = (async () => {
+    const defaults = {
+      apiEndpoint: '',
+      apiKey: '',
+      model: '',
+      targetLanguage: 'Chinese (Simplified)',
+      displayMode: 'bilingual',
+      chunkSize: 4000
+    };
+    const stored = await chrome.storage.sync.get(Object.keys(defaults));
+    cachedSettings = { ...defaults, ...stored };
+    settingsFetchPromise = null;
+    return cachedSettings;
+  })();
+  return settingsFetchPromise;
 }
 
 // ---- Core API Call ----

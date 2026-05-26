@@ -64,18 +64,21 @@ async function getSettingsAsync() {
   if (cachedSettings) return cachedSettings;
   if (settingsFetchPromise) return settingsFetchPromise;
   settingsFetchPromise = (async () => {
-    const defaults = {
-      apiEndpoint: '',
-      apiKey: '',
-      model: '',
-      targetLanguage: 'Chinese (Simplified)',
-      displayMode: 'bilingual',
-      chunkSize: 4000
-    };
-    const stored = await chrome.storage.sync.get(Object.keys(defaults));
-    cachedSettings = { ...defaults, ...stored };
-    settingsFetchPromise = null;
-    return cachedSettings;
+    try {
+      const defaults = {
+        apiEndpoint: '',
+        apiKey: '',
+        model: '',
+        targetLanguage: 'Chinese (Simplified)',
+        displayMode: 'bilingual',
+        chunkSize: 4000
+      };
+      const stored = await chrome.storage.sync.get(Object.keys(defaults));
+      cachedSettings = { ...defaults, ...stored };
+      return cachedSettings;
+    } finally {
+      settingsFetchPromise = null;
+    }
   })();
   return settingsFetchPromise;
 }

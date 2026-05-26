@@ -93,7 +93,7 @@
         currentSettings = await chrome.runtime.sendMessage({ type: 'GET_SETTINGS' });
       } catch (e) {
         if (e.message && e.message.includes('Extension context invalidated')) {
-          AI_TRANS.hideFloatingPanel();
+          AI_TRANS.showFloatingPanelError('Extension reloaded — please refresh the page (F5)');
           return;
         }
         currentSettings = { targetLanguage: '' };
@@ -126,7 +126,7 @@
     } catch (e) {
       if (reqId !== currentSelectionRequestId) return;
       if (e.message && e.message.includes('Extension context invalidated')) {
-        AI_TRANS.hideFloatingPanel();
+        AI_TRANS.showFloatingPanelError('Extension reloaded — please refresh the page (F5)');
         return;
       }
       AI_TRANS.showFloatingPanelError('Extension error: ' + e.message);

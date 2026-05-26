@@ -100,7 +100,7 @@
 
   // ---- Full Page Translation ----
   async function startFullPageTranslation() {
-    if (translationInProgress) return;
+    if (translationInProgress || pageTranslated) return;
     translationInProgress = true;
 
     try {

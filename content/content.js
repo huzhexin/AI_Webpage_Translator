@@ -87,7 +87,11 @@
 
     // Fetch settings once per session (or after settings change)
     if (!currentSettings) {
-      currentSettings = await chrome.runtime.sendMessage({ type: 'GET_SETTINGS' });
+      try {
+        currentSettings = await chrome.runtime.sendMessage({ type: 'GET_SETTINGS' });
+      } catch (_) {
+        currentSettings = { targetLanguage: '' };
+      }
     }
     const targetLang = (currentSettings && currentSettings.targetLanguage) || '';
     const cacheKey = text.trim().toLowerCase() + '|' + targetLang;

@@ -179,8 +179,12 @@
       labelEl.className = 'ai-trans-progress-label';
       labelEl.textContent = 'AI Translating...';
 
+      const progressTrackEl = document.createElement('div');
+      progressTrackEl.className = 'ai-trans-progress-track';
+      progressTrackEl.appendChild(progressBarEl);
+
       progressContainerEl.appendChild(labelEl);
-      progressContainerEl.appendChild(progressBarEl);
+      progressContainerEl.appendChild(progressTrackEl);
       document.documentElement.appendChild(progressContainerEl);
     }
 

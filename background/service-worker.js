@@ -18,6 +18,7 @@ chrome.runtime.onInstalled.addListener(() => {
 // ---- Settings Cache ----
 let cachedSettings = null;
 let settingsFetchPromise = null;
+let cacheGeneration = 0;
 
 // ---- Context Menu Handler ----
 chrome.contextMenus.onClicked.addListener((info, tab) => {
@@ -57,12 +58,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.storage.onChanged.addListener(() => {
   cachedSettings = null;
   settingsFetchPromise = null;
+  cacheGeneration++;
 });
 
 // ---- Settings ----
 async function getSettingsAsync() {
   if (cachedSettings) return cachedSettings;
   if (settingsFetchPromise) return settingsFetchPromise;
+  const gen = cacheGeneration;
   settingsFetchPromise = (async () => {
     try {
       const defaults = {
@@ -74,8 +77,10 @@ async function getSettingsAsync() {
         chunkSize: 4000
       };
       const stored = await chrome.storage.sync.get(Object.keys(defaults));
-      cachedSettings = { ...defaults, ...stored };
-      return cachedSettings;
+      if (cacheGeneration === gen) {
+        cachedSettings = { ...defaults, ...stored };
+      }
+      return cachedSettings ?? { ...defaults, ...stored };
     } finally {
       settingsFetchPromise = null;
     }

@@ -15,6 +15,9 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+// ---- Settings Cache ----
+let cachedSettings = null;
+
 // ---- Context Menu Handler ----
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === 'translate-selection') {
@@ -49,8 +52,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+// ---- Invalidate settings cache on storage change ----
+chrome.storage.onChanged.addListener(() => {
+  cachedSettings = null;
+});
+
 // ---- Settings ----
 async function getSettingsAsync() {
+  if (cachedSettings) return cachedSettings;
   const defaults = {
     apiEndpoint: '',
     apiKey: '',
@@ -60,7 +69,8 @@ async function getSettingsAsync() {
     chunkSize: 4000
   };
   const stored = await chrome.storage.sync.get(Object.keys(defaults));
-  return { ...defaults, ...stored };
+  cachedSettings = { ...defaults, ...stored };
+  return cachedSettings;
 }
 
 // ---- Core API Call ----

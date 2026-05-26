@@ -11,6 +11,8 @@ A Chrome extension that translates web pages using any OpenAI-compatible API.
 
 - **Full-page translation** — translates all text on the page with a single click
 - **Selection translation** — select any text to get an instant floating translation panel
+- **Draggable panel** — drag the translation panel by its header to reposition it anywhere on screen
+- **Selection cache** — repeat selections return instantly with no extra API call
 - **Bilingual mode** — shows original text and translation side by side
 - **Replace mode** — replaces original text with the translation
 - **Concurrent processing** — all chunks are translated in parallel for maximum speed

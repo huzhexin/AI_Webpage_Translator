@@ -162,3 +162,21 @@
   flex: 1;
   max-width: calc(100% - 180px);
 }
+
+/* ---- Floating Panel Drag ---- */
+.ai-trans-panel-grip {
+  color: #ccc;
+  font-size: 12px;
+  margin-right: 6px;
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.ai-trans-panel-header {
+  cursor: grab;
+}
+
+.ai-trans-panel-dragging .ai-trans-panel-header {
+  cursor: grabbing;
+}

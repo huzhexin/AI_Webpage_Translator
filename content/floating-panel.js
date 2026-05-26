@@ -19,6 +19,7 @@ AI_TRANS.showFloatingPanel = function(sourceText, translation, coords) {
     panelEl.className = 'ai-trans-panel';
     panelEl.innerHTML =
       '<div class="ai-trans-panel-header">' +
+        '<span class="ai-trans-panel-grip" aria-hidden="true">⠿</span>' +
         '<span class="ai-trans-panel-title">AI Translation</span>' +
         '<span class="ai-trans-panel-close" role="button" aria-label="Close" tabindex="0">&#x2715;</span>' +
       '</div>' +
@@ -28,6 +29,40 @@ AI_TRANS.showFloatingPanel = function(sourceText, translation, coords) {
     panelEl.querySelector('.ai-trans-panel-close').addEventListener('click', AI_TRANS.hideFloatingPanel);
     panelEl.querySelector('.ai-trans-panel-close').addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') AI_TRANS.hideFloatingPanel();
+    });
+
+    // Drag state
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+
+    const headerEl = panelEl.querySelector('.ai-trans-panel-header');
+
+    headerEl.addEventListener('mousedown', (e) => {
+      if (e.target.classList.contains('ai-trans-panel-close')) return;
+      isDragging = true;
+      dragOffsetX = e.clientX - panelEl.getBoundingClientRect().left;
+      dragOffsetY = e.clientY - panelEl.getBoundingClientRect().top;
+      panelEl.classList.add('ai-trans-panel-dragging');
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const panelW = panelEl.offsetWidth;
+      const panelH = panelEl.offsetHeight;
+      let x = e.clientX - dragOffsetX + window.scrollX;
+      let y = e.clientY - dragOffsetY + window.scrollY;
+      x = Math.max(window.scrollX, Math.min(x, window.scrollX + window.innerWidth - panelW));
+      y = Math.max(window.scrollY, Math.min(y, window.scrollY + window.innerHeight - panelH));
+      panelEl.style.left = x + 'px';
+      panelEl.style.top = y + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      panelEl.classList.remove('ai-trans-panel-dragging');
     });
 
     document.documentElement.appendChild(panelEl);

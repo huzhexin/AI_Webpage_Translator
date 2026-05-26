@@ -91,7 +91,11 @@
     if (!currentSettings) {
       try {
         currentSettings = await chrome.runtime.sendMessage({ type: 'GET_SETTINGS' });
-      } catch (_) {
+      } catch (e) {
+        if (e.message && e.message.includes('Extension context invalidated')) {
+          AI_TRANS.hideFloatingPanel();
+          return;
+        }
         currentSettings = { targetLanguage: '' };
       }
     }
@@ -121,6 +125,10 @@
       }
     } catch (e) {
       if (reqId !== currentSelectionRequestId) return;
+      if (e.message && e.message.includes('Extension context invalidated')) {
+        AI_TRANS.hideFloatingPanel();
+        return;
+      }
       AI_TRANS.showFloatingPanelError('Extension error: ' + e.message);
     }
   }

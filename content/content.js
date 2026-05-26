@@ -9,6 +9,7 @@
   let pageTranslated = false;
   let currentSettings = null;
   let currentSelectionRequestId = 0;
+  const selectionCache = new Map();
 
   // Progress bar element
   let progressBarEl = null;
@@ -84,6 +85,14 @@
       coords = AI_TRANS.getSelectionCoords();
     }
 
+    // Cache hit: return immediately without an API call
+    const cacheKey = text.trim().toLowerCase();
+    if (selectionCache.has(cacheKey)) {
+      if (reqId !== currentSelectionRequestId) return;
+      AI_TRANS.updateFloatingPanel(text, selectionCache.get(cacheKey));
+      return;
+    }
+
     try {
       const response = await chrome.runtime.sendMessage({
         type: 'TRANSLATE_SELECTION',
@@ -93,6 +102,7 @@
       if (reqId !== currentSelectionRequestId) return;
 
       if (response && response.ok) {
+        selectionCache.set(cacheKey, response.translation);
         AI_TRANS.updateFloatingPanel(text, response.translation);
       } else {
         const errMsg = (response && response.error) || 'Translation failed';

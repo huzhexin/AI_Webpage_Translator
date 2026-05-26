@@ -85,8 +85,13 @@
       coords = AI_TRANS.getSelectionCoords();
     }
 
-    // Cache hit: return immediately without an API call
-    const cacheKey = text.trim().toLowerCase();
+    // Fetch settings once per session (or after settings change)
+    if (!currentSettings) {
+      currentSettings = await chrome.runtime.sendMessage({ type: 'GET_SETTINGS' });
+    }
+    const targetLang = (currentSettings && currentSettings.targetLanguage) || '';
+    const cacheKey = text.trim().toLowerCase() + '|' + targetLang;
+
     if (selectionCache.has(cacheKey)) {
       if (reqId !== currentSelectionRequestId) return;
       AI_TRANS.updateFloatingPanel(text, selectionCache.get(cacheKey));
@@ -231,5 +236,11 @@
       }, 400);
     }
   }
+
+  // Invalidate settings cache and translation cache when settings change
+  chrome.storage.onChanged.addListener(() => {
+    currentSettings = null;
+    selectionCache.clear();
+  });
 
 })();

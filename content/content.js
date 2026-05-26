@@ -74,7 +74,6 @@
     }
 
     const coords = AI_TRANS.getSelectionCoords();
-    AI_TRANS.showFloatingPanel(selectedText, null, coords);
     await handleSelectionTranslation(selectedText, coords);
   }
 
@@ -84,6 +83,9 @@
     if (!coords) {
       coords = AI_TRANS.getSelectionCoords();
     }
+
+    // Show loading state (covers both mouseup and context menu trigger paths)
+    AI_TRANS.showFloatingPanel(text, null, coords);
 
     // Fetch settings once per session (or after settings change)
     if (!currentSettings) {

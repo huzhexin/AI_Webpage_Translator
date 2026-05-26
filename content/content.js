@@ -8,6 +8,7 @@
   let translationInProgress = false;
   let pageTranslated = false;
   let currentSettings = null;
+  let currentSelectionRequestId = 0;
 
   // Progress bar element
   let progressBarEl = null;
@@ -77,6 +78,8 @@
   }
 
   async function handleSelectionTranslation(text, coords) {
+    const reqId = ++currentSelectionRequestId;
+
     if (!coords) {
       coords = AI_TRANS.getSelectionCoords();
     }
@@ -87,6 +90,8 @@
         text
       });
 
+      if (reqId !== currentSelectionRequestId) return;
+
       if (response && response.ok) {
         AI_TRANS.updateFloatingPanel(text, response.translation);
       } else {
@@ -94,6 +99,7 @@
         AI_TRANS.showFloatingPanelError(errMsg);
       }
     } catch (e) {
+      if (reqId !== currentSelectionRequestId) return;
       AI_TRANS.showFloatingPanelError('Extension error: ' + e.message);
     }
   }
